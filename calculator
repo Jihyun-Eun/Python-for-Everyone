@@ -1,28 +1,74 @@
-import tkinter as t
+from tkinter import *
 
 window = None
-display_label = None
+result_label = None
 expression = ''
 expression1 = ''
 
-def setup_GUI():
+def press(num):
+    global expression
+    global expression1
+    if num == '×':
+        expression += '×'
+        expression1 += '*'
+        result_label['text'] = expression
+    elif num == '÷':
+        expression += '÷'
+        expression1 += '/'
+        result_label['text'] = expression
+    elif num == '²':
+        expression += '²'
+        expression1 += '**2'
+        result_label['text'] = expression
+    elif num == '<':
+        expression = expression[:-1]
+        expression1 = expression1[:-1]
+        result_label['text'] = expression
+    else:
+        expression += num
+        expression1 += num
+        result_label['text'] = expression
+
+
+def press_clear():
+    global expression
+    expression = ''
+    result_label['text'] = '0'
+
+
+def press_result():
+    try:
+        global expression
+        global expression1
+        total = str(eval(expression1))
+        result_label['text'] = total[:15]
+        expression = expression1 = ''
+    except:
+        result_label['text'] = ' Error '
+    expression = expression1 = ''
+
+
+def GUI():
     global window
-    global display_label
-    window = t.Tk()
-    window.title('mycal')
+    global result_label
+    window = Tk()
     window.resizable(False, False)
-    display_label = t.Label(window, text='', anchor='e', relief=t.SUNKEN, width=15, font='Arial 20')
-    display_label.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
-    btn1 = t.Button(window, text='1', width=5, height=2, font='Arial 15', command=lambda: press('1'))
-    btn2 = t.Button(window, text='2', width=5, height=2, font='Arial 15', command=lambda: press('2'))
-    btn3 = t.Button(window, text='3', width=5, height=2, font='Arial 15', command=lambda: press('3'))
-    btn4 = t.Button(window, text='4', width=5, height=2, font='Arial 15', command=lambda: press('4'))
-    btn5 = t.Button(window, text='5', width=5, height=2, font='Arial 15', command=lambda: press('5'))
-    btn6 = t.Button(window, text='6', width=5, height=2, font='Arial 15', command=lambda: press('6'))
-    btn7 = t.Button(window, text='7', width=5, height=2, font='Arial 15', command=lambda: press('7'))
-    btn8 = t.Button(window, text='8', width=5, height=2, font='Arial 15', command=lambda: press('8'))
-    btn9 = t.Button(window, text='9', width=5, height=2, font='Arial 15', command=lambda: press('9'))
-    btn0 = t.Button(window, text='0', width=5, height=2, font='Arial 15', command=lambda: press('0'))
+    window.title('myCalc')
+
+    result_label = Label(window, text='', relief=SUNKEN, pady=10 ,anchor='e', width=15, font='굴림체 30')
+    result_label.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
+
+    btn1 = Button(window, text='1', width=5, height=2, bg='grey', fg='white', font='굴림체 20', command=lambda: press('1'))
+    btn2 = Button(window, text='2', width=5, height=2, bg='grey', fg='white', font='굴림체 20', command=lambda: press('2'))
+    btn3 = Button(window, text='3', width=5, height=2, bg='grey', fg='white', font='굴림체 20', command=lambda: press('3'))
+    btn4 = Button(window, text='4', width=5, height=2, bg='grey', fg='white', font='굴림체 20', command=lambda: press('4'))
+    btn5 = Button(window, text='5', width=5, height=2, bg='grey', fg='white', font='굴림체 20', command=lambda: press('5'))
+    btn6 = Button(window, text='6', width=5, height=2, bg='grey', fg='white', font='굴림체 20', command=lambda: press('6'))
+    btn7 = Button(window, text='7', width=5, height=2, bg='grey', fg='white', font='굴림체 20', command=lambda: press('7'))
+    btn8 = Button(window, text='8', width=5, height=2, bg='grey', fg='white', font='굴림체 20', command=lambda: press('8'))
+    btn9 = Button(window, text='9', width=5, height=2, bg='grey', fg='white', font='굴림체 20', command=lambda: press('9'))
+    btn0 = Button(window, text='0', width=5, height=2, bg='grey', fg='white', font='굴림체 20', command=lambda: press('0'))
+
     btn1.grid(row=2, column=0)
     btn2.grid(row=2, column=1)
     btn3.grid(row=2, column=2)
@@ -33,63 +79,28 @@ def setup_GUI():
     btn8.grid(row=4, column=1)
     btn9.grid(row=4, column=2)
     btn0.grid(row=5, column=1)
-    clearBtn = t.Button(window, text='C', width=5, height=1, bg='orange', fg='red', font='Arial 15', command=press_clear)
-    resultBtn = t.Button(window, text='=', width=5, height=2, bg='orange', font='Arial 15', command=press_result)
-    addBtn = t.Button(window, text='+', width=5, height=2, bg='orange', font='Arial 15', command=lambda: press('+'))
-    subBtn = t.Button(window, text='-', width=5, height=2, bg='orange', font='Arial 15', command=lambda: press('-'))
-    mulBtn = t.Button(window, text='×', width=5, height=2, bg='orange', font='Arial 15', command=lambda: press('×'))
-    divBtn = t.Button(window, text='÷', width=5, height=2, bg='orange', font='Arial 15', command=lambda: press('÷'))
-    dotBtn = t.Button(window, text='ㆍ', width=5, height=2, bg='orange', font='Arial 15', command=lambda: press('.'))
-    bkBtn = t.Button(window, text='<', width=5, height=1, bg='orange', font='Arial 15', command=lambda: press('<'))
-    pBtn = t.Button(window, text='％', width=5, height=1, bg='orange', font='Arial 15', command=lambda: press('*0.01'))
-    sqBtn = t.Button(window, text='X²', width=5, height=1, bg='orange', font='Arial 15', command=lambda: press('**2'))
-    clearBtn.grid(row=1, column=0)
-    resultBtn.grid(row=5, column=2)
+
+    addBtn = Button(window, text='+', width=5, height=2, bg='orange', fg='blue', font='굴림체 20', command= lambda: press('+'))
+    subBtn = Button(window, text='-', width=5, height=2, bg='orange', fg='blue', font='굴림체 20', command= lambda: press('-'))
+    mulBtn = Button(window, text='×', width=5, height=2, bg='orange', fg='blue', font='굴림체 20', command= lambda: press('×'))
+    divBtn = Button(window, text='÷', width=5, height=2, bg='orange', fg='blue', font='굴림체 20', command= lambda: press('÷'))
+    sqrBtn = Button(window, text='X²', width=5, height=1, bg='orange', font='굴림체 20', command= lambda: press('²'))
+    delBtn = Button(window, text='<', width=5, height=1, bg='orange', font='굴림체 20', command= lambda: press('<'))
+    perBtn = Button(window, text='%', width=5, height=1, bg='orange', font='굴림체 20', command= lambda: press('*0.01'))
+    decBtn = Button(window, text='.', width=5, height=2, bg='orange', font='굴림체 20', command= lambda: press('.'))
+    clearBtn = Button(window, text='C', width=5, height=1, bg='orange', fg='red', font='굴림체 20', command=press_clear)
+    resultBtn = Button(window, text='=', width=5, height=2, bg='orange', font='굴림체 20', command=press_result)
+
     addBtn.grid(row=2, column=3)
     subBtn.grid(row=3, column=3)
     mulBtn.grid(row=4, column=3)
     divBtn.grid(row=5, column=3)
-    dotBtn.grid(row=5, column=0)
-    bkBtn.grid(row=1, column=1)
-    pBtn.grid(row=1, column=2)
-    sqBtn.grid(row=1, column=3)
+    sqrBtn.grid(row=1, column=3)
+    delBtn.grid(row=1, column=1)
+    perBtn.grid(row=1, column=2)
+    decBtn.grid(row=5, column=0)
+    clearBtn.grid(row=1, column=0)
+    resultBtn.grid(row=5, column=2)
 
-def press(num):
-    global expression
-    global expression1
-    if num == '×':
-        expression += '×'
-        expression1 += '*'
-        display_label['text'] = expression
-    elif num == '÷':
-        expression += '÷'
-        expression1 += '/'
-        display_label['text'] = expression
-    elif num == '<':
-        expression = expression[:-1]
-        expression1 = expression1[:-1]
-        display_label['text'] = expression
-    else:
-        expression += num
-        expression1 += num
-        display_label['text'] = expression
-
-def press_clear():
-    global expression
-    global expression1
-    expression = expression1 = ''
-    display_label['text'] = '0'
-
-def press_result():
-    try:
-        global expression
-        global expression1
-        total = str(eval(expression1))
-        display_label['text'] = total[:16]
-        expression = expression1 = ''
-    except:
-        display_label['text'] = ' Error '
-        expression = expression1 = ''
-
-setup_GUI()
+GUI()
 window.mainloop()
