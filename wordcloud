@@ -1,0 +1,33 @@
+from collections import Counter
+from konlpy.tag import Okt
+from wordcloud import WordCloud # PIL, numpy 패키지는 자동설치됨
+from PIL import Image #파이썬 이미지 라이브러리
+import numpy as np
+
+file = open('naver_toy3.txt', 'r', encoding='utf-8')
+reply_text = file.readlines()
+file.close()
+
+okt=Okt()
+nouns = []
+tags = []
+text4toy=''
+for sentence in reply_text:
+    for noun in okt.nouns(sentence):
+        if noun in ['영화', '때', '내']:
+            pass
+        elif noun == '토이스토리':
+            text4toy += '지현스토리' + ' '
+        else:
+            text4toy += noun + ' '  # 출력할 명사만 뽑아서 저장
+count = Counter(nouns)
+
+mask_image = np.array(Image.open('toy.jpg'))
+wc = WordCloud(font_path='YES24.ttf',
+               background_color="white",
+               max_words=100,
+               mask=mask_image,
+               max_font_size=70,
+               colormap='hsv').generate(text4toy)
+wc.to_file("toy_result.png")
+
